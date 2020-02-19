@@ -1,0 +1,2 @@
+build_terraform/.terraform
+build_terraform/*.tfstate*

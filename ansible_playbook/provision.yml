@@ -1,0 +1,24 @@
+- hosts: all
+  become: yes 
+  vars_prompt:
+   - name: "user_name"
+     prompt: "enter a username"
+     private: no
+   - name: "user_password"    
+     prompt: "Enter a password for the user"    
+     private: yes    
+     encrypt: "md5_crypt" #need to have python-passlib installed in local machine before we can use it    
+     confirm: yes    
+     salt_size: 7
+  
+  tasks:
+     - name: Allow 'wheel' group to have passwordless sudo
+       lineinfile:
+         dest: /etc/sudoers
+         state: present
+         regexp: '^%wheel'
+         line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+         validate: 'visudo -cf %s'
+     - name: "add new user"
+       user: name="{{user_name}}" groups=wheel,docker append=yes  password="{{user_password}}"  shell="/bin/bash" createhome=yes
+

@@ -1,0 +1,5 @@
+subnet_id      ?= subnet-id
+vpc_id         ?= vpc-id
+aws_region     ?= sa-east-1
+ami            ?= ami-id
+instance_type  ?= t3.xlarge
